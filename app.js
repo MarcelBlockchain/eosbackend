@@ -1,51 +1,36 @@
+const MongoClient = require('mongodb').MongoClient
+const bodyparser = require('body-parser')
+const CONFIG = require('./config')
+// const historyapi = require('./historyapi')
+
+const MONGO_OPTIONS = {
+  socketTimeoutMS: 30000,
+  keepAlive: true,
+  reconnectTries: 30000,
+  useNewUrlParser: true
+}
+
 const express = require('express')
 const app = express()
-const morgan = require('morgan')
-const bodyParser = require('body-parser')
-const mongoose = require('mongoose')
+app.use(bodyparser.json({
+  strict: false
+}))
 
-const txRoutes = require('./api/routes/tx')
-const accountRoutes = require('./api/accounts')
-
-// mongoose.connect()....
-
-mongoose.Promise = global.Promise
-
-app.use(morgan('dev'))
-// app.use(./uploads ...)
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
-
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*')
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-  )
-  if (req.method === 'OPTIONS') {
-    res.header('Access-Control-Allow-Methods', 'PUT, POST, DELETE, GET, PATCH')
-    return res.status(200).json({})
-  }
-  next()
+process.on('uncaughtException', (err) => {
+  console.error(`======= UncaughtException API Server :  ${err}`)
 })
 
-// Routes which should handle requests
-app.use('/tx', txRoutes)
-app.use('/accounts', accountRoutes)
-
-app.use((req, res, next) => {
-  const error = new Error('Not found')
-  error.status = 404
-  next(error)
+MongoClient.connect(CONFIG.mongoURL, MONGO_OPTIONS, (err, db) => {
+  if (err) return console.error('Database error !!!', err)
+  console.log('=== Database Connected!')
+  const dbo = db.db(CONFIG.mongoDB)
+  require('./historyapi')(app, dbo)
 })
 
-app.use((error, req, res, next) => {
-  res.status(error.status || 500)
-  res.json({
-    error: {
-      message: error.message
-    }
-  })
+const http = require('http').Server(app)
+http.listen(CONFIG.serverPort, () => {
+  console.log('=== Listening on port:', CONFIG.serverPort)
 })
-
-module.exports = app
+http.on('error', (err) => {
+  console.error('=== Http server error', err)
+})

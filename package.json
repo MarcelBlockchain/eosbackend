@@ -22,16 +22,14 @@
   ],
   "author": "Marcel Morales",
   "license": "BSD-3-Clause",
-  "bugs": {
-    "url": "https://github.com/MarcelBlockchain/eosbackend/issues"
-  },
-  "homepage": "https://github.com/MarcelBlockchain/eosbackend#readme",
   "dependencies": {
+    "@slack/client": "^4.8.0",
+    "async": "^2.6.1",
     "bcrypt": "^3.0.1",
     "body-parser": "^1.18.3",
+    "eosjs": "^20.0.0-beta1",
     "express": "^4.16.3",
-    "jsonwebtoken": "^8.3.0",
-    "mongoose": "^5.3.1",
+    "mongodb": "^3.1.8",
     "morgan": "^1.9.1",
     "multer": "^1.4.0"
   },
