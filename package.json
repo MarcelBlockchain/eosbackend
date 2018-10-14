@@ -2,7 +2,7 @@
   "name": "eosbackend",
   "version": "0.0.1",
   "description": "EOS Node.js backend to create accounts and query user transactions",
-  "main": "nodemon server.js",
+  "main": "./start.sh",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
