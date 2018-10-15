@@ -1,7 +1,6 @@
 const MongoClient = require('mongodb').MongoClient
 const bodyparser = require('body-parser')
 const CONFIG = require('./config')
-// const historyapi = require('./historyapi')
 
 const MONGO_OPTIONS = {
   socketTimeoutMS: 30000,

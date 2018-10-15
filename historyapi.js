@@ -1,3 +1,4 @@
+const _ = require('lodash')
 const MAX_ELEMENTS = 1000
 
 module.exports = (app, DB) => {
@@ -43,7 +44,30 @@ module.exports = (app, DB) => {
         console.error(err)
         return res.status(500).end()
       };
-      res.json({ actions: result })
+      const transactions = []
+      result.map(a => {
+        const { from, memo, quantity, to } = a.act.data
+        const split = quantity.split(' ')
+        const [exchangeAmount, currencyCode] = split
+
+        const singleTx = {
+          txid: a.trx_id,
+          date: a.block_time,
+          currencyCode,
+          blockHeight: a.block_num,
+          networkFee: '0',
+          parentNetworkFee: '0',
+          signedTx: 'has_been_signed',
+          metadata: { notes: memo },
+          otherParams: { fromAddress: from, toAddress: to },
+          exchangeAmount,
+          quantity,
+          name: a.act.name
+        }
+        // protects against double entries
+        if (!_.some(transactions, singleTx)) transactions.push(singleTx)
+      })
+      res.json(transactions)
     })
   }
 }
