@@ -1,0 +1,59 @@
+# api.j2 will be used be used by docker to override api.j2 from original Block Matrix automation repo
+
+agent-name = {{ agent_name }}
+
+http-server-address = 0.0.0.0:8888
+p2p-listen-endpoint = 0.0.0.0:9876
+
+bnet-endpoint = 0.0.0.0:4321
+
+# make sure path name is correct. Same volume when launching docker using:
+# docker run -ti -d -v /mnt/{your_external_volume_name}:/mnt/xfs ...
+blocks-dir = "/mnt/xfs/blocks"
+
+bnet-follow-irreversible = 0
+bnet-no-trx = false
+read-mode = read-only
+validation-mode = light
+mongodb-uri = mongodb://127.0.0.1:27017/EOS
+mongodb-queue-size = 2048
+mongodb-abi-cache-size = 2048
+mongodb-block-start = 1
+mongodb-store-blocks = 0
+mongodb-store-transactions = 0
+mongodb-store-transaction-traces = 0
+mongodb-store-action-traces = 1
+mongodb-filter-on = *
+mongodb-filter-out = eosio:onblock:
+mongodb-filter-out = gu2tembqgage::
+mongodb-filter-out = blocktwitter::
+
+wasm-runtime = wabt
+p2p-max-nodes-per-host = 1
+http-validate-host = false
+https-client-validate-peers = 1
+abi-serializer-max-time-ms = 10000
+chain-state-db-size-mb = 32000
+reversible-blocks-db-size-mb = 340
+contracts-console = false
+allowed-connection = any
+max-clients = 100
+network-version-match = 0
+sync-fetch-span = 500
+connection-cleanup-period = 30
+max-implicit-request = 1500
+
+access-control-allow-origin = *
+access-control-allow-headers = *
+access-control-allow-credentials = false
+verbose-http-errors = true
+
+plugin = eosio::chain_plugin
+plugin = eosio::chain_api_plugin
+plugin = eosio::bnet_plugin
+plugin = eosio::mongo_db_plugin
+plugin = eosio::http_plugin
+
+{% for address in p2p_peer_addresses %}
+p2p-peer-address = {{ address }}
+{% endfor %}

@@ -1,0 +1,8 @@
+[api-1]
+ip.address.of.your.node
+
+[api:children]
+api-1
+
+[mainnet:children]
+api
