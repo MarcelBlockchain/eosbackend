@@ -18,6 +18,14 @@ Stronger CPU means faster syncing
 * [Initial Server Setup Digital Ocean Ubuntu 18.04](https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-18-04) Step 5 not needed, just follow:
 * [How to Set Up SSH Keys on Ubuntu 18.04](https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys-on-ubuntu-1804)
 
+### Installation
+In folder Docker run:
+
+* docker build -t eosnode/eosio:1.0 .
+* docker run -ti -d -v /mnt/{your_XFS_volume_here}:/mnt/{your_XFS_volume_here} --rm eosnode/eosio:1.0 /bin/sh
+* cd /home/eosbackend/eos-mainnet && ansible-playbook install yml
+* wait 30-60min
+
 ... to be continued ...
 
 #### Helpful links
