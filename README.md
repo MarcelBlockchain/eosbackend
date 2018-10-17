@@ -18,7 +18,17 @@ Stronger CPU means faster syncing
 * [Initial Server Setup Digital Ocean Ubuntu 18.04](https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-18-04) Step 5 not needed, just follow:
 * [How to Set Up SSH Keys on Ubuntu 18.04](https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys-on-ubuntu-1804)
 
+### Change following variables
+* `eosbackend/eos-mainnet/group-vars/mainnet.yml`
+    * `agent_name` if wished  
+    * `eos_install_dir`, `mainnet_install_dir` and `ansible_ssh_private_key_file`. Replace `volume_lon1_01` with the name of your XFS formatted volume mounted at `/mnt/`  
+* Same for `eos-mainnet/roles/network/templates/mainnet/api.j2` 
+    * L12 `blocks-dir`  
+* `eos-mainnet/inventory`
+    *  replace the IP with your server's
+
 ### Installation
+
 In folder Docker run:
 
 * docker build -t eosnode/eosio:1.0 .
